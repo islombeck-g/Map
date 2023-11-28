@@ -1,5 +1,6 @@
 import SwiftUI
 import MapKit
+import SwiftData
 
 struct NewMap: View {
     
@@ -8,9 +9,13 @@ struct NewMap: View {
     
     @StateObject var viewModel = ViewModelo()
     
+    @Query var items:[LocalItems]
+    @Environment(\.modelContext) private var modelContext
+    @State private var newItemText:String = ""
+    
     var body: some View {
         
-        NavigationStack {
+        ZStack {
             
             MapReader { reader in
                 
@@ -40,14 +45,25 @@ struct NewMap: View {
                                 .tint(Color.orange)
                         }
                     }
+                    
+                    ForEach(
+                        self.items.filter { item in
+                            self.viewModel.searchText.isEmpty || item.name.contains(self.viewModel.searchText)
+                        }, id:\.self) { q in
+                            
+                            Marker(q.name, coordinate: CLLocationCoordinate2DMake(q.coorLa, q.coorLo))
+                                .tint(.black)
+                        }
+                    
                 }
+                
                 .scaleEffect(CGFloat(self.viewModel.scale), anchor: .center)
                 .mapStyle(self.viewModel.mapstiles)
                 .mapControls {
-                    MapUserLocationButton()
                     MapCompass()
                     MapScaleView()
                 }
+                
                 .onTapGesture(perform: { screenCoord in
                     
                     if self.viewModel.addPointMode {
@@ -65,132 +81,59 @@ struct NewMap: View {
                     }
                     placeAPin = false
                 })
-                .safeAreaInset(edge: .bottom) {
-                    VStack(spacing: 10) {
-                        
-                        Group {
-                            HStack {
-
-                                Spacer()
-                                
-                                Button {
-                                    
-                                    if self.viewModel.addPointMode == false {
-                                        self.viewModel.selectedCoordinatesToAddLocation = nil
-                                    }
-                                    
-                                    self.viewModel.addPointMode.toggle()
-                                    self.viewModel.pickMode = false
-                                    
-                                } label: {
-                                    Image(systemName: "plus.app")
-                                        .font(.system(size: 23))
-                                        .padding(.all, 10)
-                                        .foregroundStyle(self.viewModel.addPointMode == true ? .white : .blue)
-                                }
-                                .background(self.viewModel.addPointMode == true ? .orange : .white.opacity(0.7))
-                                .clipShape(.rect(cornerRadius: 8))
-                            }
-                            .padding(.trailing, 5)
-                        }
-                        
-                        HStack {
-
-                            Spacer()
-                            
-                            Button {
-                                
-                                self.viewModel.changeMapStyle1()
-                                
-                            } label: {
-                                Image(systemName: "map.fill")
-                                    .font(.system(size: 23))
-                                    .padding(.all, 10)
-                            }
-                            .background(.white.opacity(0.7))
-                            .clipShape(.rect(cornerRadius: 8))
-                        }
-                        .padding(.trailing, 5)
-                        
-                        HStack {
-
-                            Spacer()
-                            
-                            Button {
-                                
-                                self.viewModel.changeMapStyle0()
-                                
-                            } label: {
-                                Image(systemName: "map")
-                                    .font(.system(size: 23))
-                                    .padding(.all, 10)
-                            }
-                            .background(.white.opacity(0.7))
-                            .clipShape(.rect(cornerRadius: 8))
-                        }
-                        .padding(.trailing, 5)
-                        
-                        HStack {
-
-                            Spacer()
-                            
-                            Button {
-                                
-                                self.viewModel.pickMode.toggle()
-                                self.viewModel.addPointMode = false
-                                
-                            } label: {
-                                Image(systemName: "mappin.circle.fill")
-                                    .font(.system(size: 23))
-                                    .padding(.all, 10)
-                            }
-                            .background(.white.opacity(0.7))
-                            .clipShape(.rect(cornerRadius: 8))
-                        }
-                        .padding(.trailing, 5)
-                        
-                        HStack {
-
-                            Spacer()
-                            
-                            Button {
-                                
-                                self.viewModel.settingsShetViewShow = true
-                                
-                            } label: {
-                                Image(systemName: "square.and.arrow.up.fill")
-                                    .font(.system(size: 23))
-                                    .padding(.all, 10)
-                            }
-                            .background(.white.opacity(0.7))
-                            .clipShape(.rect(cornerRadius: 8))
-                        }
-                        .padding(.trailing, 5)
-                        .padding(.bottom, 30)
-                        
-
-                    }
-                    
-                    
+            }
+            HStack {
+                Spacer()
+                VStack {
+                    Spacer()
+                    SidePanelView()
+                        .environmentObject(self.viewModel)
                 }
             }
+            
+            VStack {
+                TextField("Введите назавание точки", text: self.$viewModel.searchText)
+                    .padding()
+                    .background(Color.white)
+                    .clipShape(.rect(cornerRadius: 10))
+                    .padding()
+                Spacer()
+            }
+            
+                
         }
+        
         .sheet(isPresented: self.$viewModel.settingsShetViewShow) {
             SheetView()
                 .environmentObject(self.viewModel)
                 .presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: Binding(
-            get: {
-                self.viewModel.selectedCoordinatesToAddLocation != nil
-            },
-            set: { _ in
-                self.viewModel.selectedCoordinatesToAddLocation = nil
-            })
-        ) {
-            AddNewPositionSheetView()
-                .environmentObject(self.viewModel)
-                .presentationDetents([.height(150) , .large])
+        .sheet(isPresented: self.$viewModel.showPointSheetView) {
+            Group {
+                TextField("Введите назавание точки", text: $newItemText)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+                HStack {
+                    Button{
+                        
+                        if let pl = self.viewModel.selectedCoordinatesToAddLocation {
+                            do {
+                                let n = LocalItems(name: newItemText, coorLa: pl.latitude , coorLo: pl.longitude)
+                                modelContext.insert(n)
+                            }
+                            
+                            print("saved")
+                            self.newItemText = ""
+                            self.viewModel.showPointSheetView = false
+                        }
+                        
+                    }label: {
+                        Text("save")
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
+            .presentationDetents([.height(150)])
         }
     }
 }

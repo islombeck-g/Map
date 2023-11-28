@@ -14,3 +14,4 @@ struct AddNewPositionSheetView: View {
     AddNewPositionSheetView()
         .environmentObject(ViewModelo())
 }
+

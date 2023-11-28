@@ -14,6 +14,8 @@
 		63B6595C2B11348F0012593E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63B6595B2B11348F0012593E /* Preview Assets.xcassets */; };
 		63B659632B113A7A0012593E /* NewMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B659622B113A7A0012593E /* NewMap.swift */; };
 		63B659652B113AFB0012593E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B659642B113AFB0012593E /* ViewModel.swift */; };
+		63B838F12B1638B00038F643 /* SidePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B838F02B1638B00038F643 /* SidePanelView.swift */; };
+		63B838F32B166D430038F643 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B838F22B166D430038F643 /* ExampleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		63B6595B2B11348F0012593E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		63B659622B113A7A0012593E /* NewMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMap.swift; sourceTree = "<group>"; };
 		63B659642B113AFB0012593E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		63B838F02B1638B00038F643 /* SidePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidePanelView.swift; sourceTree = "<group>"; };
+		63B838F22B166D430038F643 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +62,12 @@
 			isa = PBXGroup;
 			children = (
 				63B659542B11348E0012593E /* NewMapApp.swift */,
+				63B838F22B166D430038F643 /* ExampleView.swift */,
 				63B659622B113A7A0012593E /* NewMap.swift */,
 				63B659642B113AFB0012593E /* ViewModel.swift */,
 				635D2EC52B114A2700116545 /* SheetView.swift */,
 				63637CCB2B148490008C64E9 /* AddNewPositionSheetView.swift */,
+				63B838F02B1638B00038F643 /* SidePanelView.swift */,
 				63B659582B11348F0012593E /* Assets.xcassets */,
 				63B6595A2B11348F0012593E /* Preview Content */,
 			);
@@ -148,8 +154,10 @@
 			files = (
 				63B659632B113A7A0012593E /* NewMap.swift in Sources */,
 				63637CCC2B148490008C64E9 /* AddNewPositionSheetView.swift in Sources */,
+				63B838F12B1638B00038F643 /* SidePanelView.swift in Sources */,
 				635D2EC62B114A2700116545 /* SheetView.swift in Sources */,
 				63B659652B113AFB0012593E /* ViewModel.swift in Sources */,
+				63B838F32B166D430038F643 /* ExampleView.swift in Sources */,
 				63B659552B11348E0012593E /* NewMapApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

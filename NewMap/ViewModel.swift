@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 import MapKit
-
+import SwiftData
 
 class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
     
@@ -9,7 +9,6 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var settingsShetViewShow = false
     
-
     @Published var pickMode = false
     
     @Published var isFirstPoint = true
@@ -47,11 +46,9 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
     
-
+    
     @Published var mapstiles:MapStyle = .standard
-    
     func changeMapStyle0() { self.mapstiles = .standard }
-    
     func changeMapStyle1() { self.mapstiles = .hybrid }
     
     
@@ -71,11 +68,11 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var addPointMode = false
     @Published var selectedCoordinatesToAddLocation: CLLocationCoordinate2D? = nil
-//    @Published var selectedItem: MKMapItem?
+    @Published var showPointSheetView = false
     
+    @Published var markers:[MKMapItem] = []
     
-    
-    
+    @Published var searchText:String = ""
     
     func clean() {
         self.firstPoint = nil
@@ -111,3 +108,30 @@ class mapViewCoordinator: NSObject, MKMapViewDelegate {
     }
     
 }
+
+@Model
+class LocalItems {
+    //    var coordinates:CLLocationCoordinate2D
+    var name:String
+    var coorLa:CLLocationDegrees
+    var coorLo:CLLocationDegrees
+    
+    init(name: String, coorLa: CLLocationDegrees, coorLo: CLLocationDegrees) {
+        self.name = name
+        self.coorLa = coorLa
+        self.coorLo = coorLo
+    }
+}
+
+
+//@Model
+//class SelectedMarkers {
+//
+//   var market: MKMapItem
+//    var name: String
+//
+//    init(market: MKMapItem, name: String) {
+//        self.market = market
+//        self.name = name
+//    }
+//}

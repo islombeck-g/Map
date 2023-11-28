@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct NewMapApp: App {
@@ -6,7 +7,13 @@ struct NewMapApp: App {
         WindowGroup {
             NewMap()
         }
+        .modelContainer(for: LocalItems.self)
     }
 }
-  
-  
+
+
+//
+//  NewMap
+//
+//  Created by Islombek Gofurov.
+//
