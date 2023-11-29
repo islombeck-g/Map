@@ -21,7 +21,7 @@ struct NewMap: View {
                 
                 Map(position: self.$viewModel.cameraPosition) {
                     
-                    if self.viewModel.pickMode {
+                    if self.viewModel.routeMode {
                         
                         if let pl = self.viewModel.firstPoint {
                             Marker("(\(pl.latitude), \(pl.longitude))", coordinate: pl)
@@ -63,7 +63,6 @@ struct NewMap: View {
                     MapCompass()
                     MapScaleView()
                 }
-                
                 .onTapGesture(perform: { screenCoord in
                     
                     if self.viewModel.addPointMode {
@@ -88,25 +87,25 @@ struct NewMap: View {
                     Spacer()
                     SidePanelView()
                         .environmentObject(self.viewModel)
+                        .padding(.bottom, 50)
                 }
             }
             
             VStack {
+                Spacer()
                 TextField("Введите назавание точки", text: self.$viewModel.searchText)
                     .padding()
                     .background(Color.white)
                     .clipShape(.rect(cornerRadius: 10))
                     .padding()
-                Spacer()
+                    .padding(.top, 15)
+//                Spacer()
             }
-            
-                
         }
-        
         .sheet(isPresented: self.$viewModel.settingsShetViewShow) {
             SheetView()
                 .environmentObject(self.viewModel)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.height(450), .large])
         }
         .sheet(isPresented: self.$viewModel.showPointSheetView) {
             Group {

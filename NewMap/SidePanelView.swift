@@ -15,7 +15,7 @@ struct SidePanelView: View {
                     }
                     
                     self.viewModel.addPointMode.toggle()
-                    self.viewModel.pickMode = false
+                    self.viewModel.routeMode = false
                 } label: {
                     Image(systemName: "plus.viewfinder")
                         .font(.system(size: 23))
@@ -90,7 +90,7 @@ struct SidePanelView: View {
             
             Button {
                 
-                self.viewModel.pickMode.toggle()
+                self.viewModel.routeMode.toggle()
                 self.viewModel.addPointMode = false
                 
             } label: {
