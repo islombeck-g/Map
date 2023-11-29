@@ -110,8 +110,7 @@ class mapViewCoordinator: NSObject, MKMapViewDelegate {
 }
 
 @Model
-class LocalItems {
-    //    var coordinates:CLLocationCoordinate2D
+class LocalItems:Hashable {
     var name:String
     var coorLa:CLLocationDegrees
     var coorLo:CLLocationDegrees
@@ -120,6 +119,17 @@ class LocalItems {
         self.name = name
         self.coorLa = coorLa
         self.coorLo = coorLo
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(coorLa)
+        hasher.combine(coorLo)
+    }
+    
+    static func == (lhs: LocalItems, rhs: LocalItems) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.coorLa == rhs.coorLa &&
+        lhs.coorLo == rhs.coorLo
     }
 }
 
