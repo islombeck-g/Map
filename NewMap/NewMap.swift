@@ -33,7 +33,7 @@ struct NewMap: View {
                                 .tint(Color.red)
                         }
                         
-                        if let route = self.viewModel.route {
+                        if let route = self.viewModel.road {
                             MapPolyline(route)
                                 .stroke(.blue, lineWidth: 4)
                         }
@@ -56,7 +56,6 @@ struct NewMap: View {
                         }
                     
                 }
-                
                 .scaleEffect(CGFloat(self.viewModel.scale), anchor: .center)
                 .mapStyle(self.viewModel.mapstiles)
                 .mapControls {

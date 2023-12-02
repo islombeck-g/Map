@@ -14,12 +14,12 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var isFirstPoint = true
     @Published var firstPoint :CLLocationCoordinate2D? = nil
     @Published var secondPoint :CLLocationCoordinate2D? = nil
-    @Published var route:MKRoute?
+    @Published var road:MKRoute?
     
     func getRoute(_ style : String) {
         
-        let sourcePlacemark = MKPlacemark(coordinate: firstPoint!, addressDictionary: nil)
-        let destinationPlacemark = MKPlacemark(coordinate: secondPoint!, addressDictionary: nil)
+        let sourcePlacemark = MKPlacemark(coordinate: firstPoint!)
+        let destinationPlacemark = MKPlacemark(coordinate: secondPoint!)
         
         let sourceItem = MKMapItem(placemark: sourcePlacemark)
         let destinationItem = MKMapItem(placemark: destinationPlacemark)
@@ -36,14 +36,14 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
         
         let directions = MKDirections(request: request)
         directions.calculate { (response, error) in
-            guard let route = response?.routes.first else {
+            guard let road = response?.routes.first else {
                 if let error = error {
                     print("Error getting directions: \(error.localizedDescription)")
                 }
                 return
             }
             
-            self.route = route
+            self.road = road
             self.settingsShetViewShow = false
         }
     }
@@ -79,7 +79,7 @@ class ViewModelo:NSObject, ObservableObject, CLLocationManagerDelegate {
         self.secondPoint = nil
         self.isFirstPoint = true
         self.routeMode = false
-        self.route = nil
+        self.road = nil
     }
 }
 
